@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'labs-hw/quizzle/quiz_screen.dart';
 import 'labs-hw/quizzle/quiz_bloc.dart';
+import 'labs-hw/dealnodeal/views/deal_or_no_deal_screen.dart';
+import 'labs-hw/dealnodeal/deal_bloc.dart';
+//import 'labs-hw/dealnodeal/...
 
 void main() {
   runApp(const LabSelectorApp());
@@ -29,7 +32,22 @@ class LabSelectionScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Select a Lab')),
       body: ListView(
         children: [
-          _buildLabButton(context, "Lab 1: Quizzle", const QuizScreen()),
+          _buildLabButton(
+            context,
+            "Quizzle",
+            BlocProvider(
+              create: (context) => QuizBloc()..add(LoadQuiz()),
+              child: const QuizScreen(),
+            ),
+          ),
+          _buildLabButton(
+            context,
+            "Deal or No Deal",
+            BlocProvider(
+              create: (context) => DealBloc(),
+              child: const DealOrNoDealScreen(),
+            ),
+          ),
         ],
       ),
     );
@@ -42,12 +60,7 @@ class LabSelectionScreen extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => BlocProvider(
-                create: (context) => QuizBloc()..add(LoadQuiz()), // Wrap QuizScreen with BlocProvider
-                child: screen,
-              ),
-            ),
+            MaterialPageRoute(builder: (context) => screen),
           );
         },
         child: Text(label, style: const TextStyle(fontSize: 18)),
